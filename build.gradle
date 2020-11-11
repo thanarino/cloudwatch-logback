@@ -21,7 +21,7 @@ task fatJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'Cloudwatch Log Upload POC',
                 'Implementation-Version': archiveVersion,
-                'Main-Class': 'Application'
+                'Main-Class': 'cloudwatch.logback.App'
     }
     archiveBaseName = project.name + '-all'
     from {
@@ -66,5 +66,5 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClassName = 'cloudwatch.logback.Application'
+    mainClassName = 'cloudwatch.logback.App'
 }

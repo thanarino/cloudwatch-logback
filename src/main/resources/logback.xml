@@ -1,31 +1,44 @@
 <configuration>
     <property resource="logback.properties" />
 
-    <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${HOME_LOG}</file>
-        <rollingPolicy class="S3TimeBasedRollingPolicy">
-            <fileNamePattern>${FILE_NAME_PATTERN}</fileNamePattern>
-            <periodMinutes>${PERIOD_MINUTES}</periodMinutes>
-            <awsAccessKey>${AWS_ACCESS_KEY}</awsAccessKey>
-            <awsSecretKey>${AWS_SECRET_KEY}</awsSecretKey>
-            <s3BucketName>${S3_BUCKET_NAME}</s3BucketName>
-            <s3FolderName>${S3_FOLDER_NAME}</s3FolderName>
-        </rollingPolicy>
+    <appender name="CLOUDWATCH" class="cloudwatch.logback.CloudWatchAppender">
+        <region>${REGION}</region>
+        <logGroup>${LOG_GROUP}</logGroup>
+        <logStream>${LOG_STREAM}</logStream>
+        <accessKeyId>${AWS_ACCESS_KEY}</accessKeyId>
+        <secretKey>${AWS_SECRET_KEY}</secretKey>
 
-        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
-            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
-                <appendLineSeparator>true</appendLineSeparator>
-                <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter" />
-            </layout>
-        </encoder>
+        <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">
+            <appendLineSeparator>true</appendLineSeparator>
+            <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter" />
+        </layout>
     </appender>
 
+    <!--    <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">-->
+<!--        <file>${HOME_LOG}</file>-->
+<!--        <rollingPolicy class="S3TimeBasedRollingPolicy">-->
+<!--            <fileNamePattern>${FILE_NAME_PATTERN}</fileNamePattern>-->
+<!--            <periodMinutes>${PERIOD_MINUTES}</periodMinutes>-->
+<!--            <awsAccessKey>${AWS_ACCESS_KEY}</awsAccessKey>-->
+<!--            <awsSecretKey>${AWS_SECRET_KEY}</awsSecretKey>-->
+<!--            <s3BucketName>${S3_BUCKET_NAME}</s3BucketName>-->
+<!--            <s3FolderName>${S3_FOLDER_NAME}</s3FolderName>-->
+<!--        </rollingPolicy>-->
+
+<!--        <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">-->
+<!--            <layout class="ch.qos.logback.contrib.json.classic.JsonLayout">-->
+<!--                <appendLineSeparator>true</appendLineSeparator>-->
+<!--                <jsonFormatter class="ch.qos.logback.contrib.jackson.JacksonJsonFormatter" />-->
+<!--            </layout>-->
+<!--        </encoder>-->
+<!--    </appender>-->
+
     <logger name="com.example" level="all" additivity="false">
-        <appender-ref ref="FILE-ROLLING"/>
+        <appender-ref ref="CLOUDWATCH"/>
     </logger>
 
     <root level="all">
-        <appender-ref ref="FILE-ROLLING"/>
+        <appender-ref ref="CLOUDWATCH"/>
     </root>
 
     <!-- overriding the default log level per class / package -->
